@@ -6,8 +6,9 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,12 +34,54 @@ public class MainActivity extends Activity {
 		mListView = (ListView) findViewById(R.id.list);
 		mTextView = (TextView) findViewById(R.id.text);
 		records = new ArrayList<VinylRecord>();
-		coobj = new Coordinator();
+		coobj = new Coordinator(MainActivity.this);
 		
-		Log.d("Main","calling cord");
-		records = coobj.read(MainActivity.this);
-		Log.d("Main","return cord");
-				
+		records = coobj.read();
+		fillListView();
+		
+		mListView.setOnItemClickListener(itemClickListener);
+        
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+	
+	private void sortByArtist(){
+		records = coobj.readSortByArtist(); 
+		fillListView();
+	}
+	private void sortByTitle(){
+		records = coobj.readSortByTitle();
+		fillListView();
+	}
+	private void sortByTrack(){
+		records = coobj.read();
+		fillListView();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+        case R.id.artist: sortByArtist();
+            return true;
+        case R.id.title: sortByTitle();
+            return true;
+        case R.id.track: sortByTrack();
+            return true;            
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+	}
+	
+	private void fillListView(){
+		
+		//mListView.
+		
 		if(records != null){
 			int size = records.size();
 			values = new String[size];
@@ -53,29 +96,14 @@ public class MainActivity extends Activity {
 			mTextView.setText("Database not found");
 		}
 		
-		// Define a new Adapter
-		// First parameter - Context
-		// Second parameter - Layout for the row
-		// Third parameter - ID of the TextView to which the data is written
-		// Forth - the Array of data
-
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
 
 		// Assign adapter to ListView
 		mListView.setAdapter(adapter);
 		
-		mListView.setOnItemClickListener(itemClickListener);
-        
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
+	
 	
 	private OnItemClickListener itemClickListener = new OnItemClickListener() {
 

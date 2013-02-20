@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.util.Log;
 import business.VinylRecord;
@@ -24,7 +23,7 @@ public class TextData implements DAO {
 		///MuliTierPrac/src/database/VinylAlbums.db
 
 		Log.d("TextData", "In textData");
-		FileReader fr = null;
+		//FileReader fr = null;
 		InputStream is = null;
 		try {
 			AssetManager assetManager = ctx.getAssets();

@@ -1,9 +1,8 @@
 package business;
 
-import java.io.Serializable;
 
 
-public class VinylRecord implements Serializable{
+public class VinylRecord implements Comparable<VinylRecord>{
 	
 	private String title;
 	private String artist;
@@ -49,6 +48,15 @@ public class VinylRecord implements Serializable{
 
 	public String getDesc() {
 		return desc;
+	}
+
+	@Override
+	public int compareTo(VinylRecord r) {
+		
+        Integer thisOne = this.getTracks();
+        Integer otherOne = r.getTracks();
+
+        return thisOne.compareTo(otherOne);		
 	}
 	
 	
